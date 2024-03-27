@@ -1,0 +1,20 @@
+[0.649s] Invoking command in '/home/sam/turtlebot3_ws/build/res_sim': PYTHONPATH=/home/sam/turtlebot3_ws/build/res_sim/prefix_override:/home/sam/turtlebot3_ws/install/res_sim/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py develop --editable --build-directory /home/sam/turtlebot3_ws/build/res_sim/build --no-deps symlink_data
+[0.842s] running develop
+[0.842s] /usr/lib/python3/dist-packages/setuptools/command/easy_install.py:158: EasyInstallDeprecationWarning: easy_install command is deprecated. Use build and pip and other standards-based tools.
+[0.842s]   warnings.warn(
+[0.932s] running egg_info
+[0.932s] writing res_sim.egg-info/PKG-INFO
+[0.932s] writing dependency_links to res_sim.egg-info/dependency_links.txt
+[0.932s] writing entry points to res_sim.egg-info/entry_points.txt
+[0.932s] writing requirements to res_sim.egg-info/requires.txt
+[0.932s] writing top-level names to res_sim.egg-info/top_level.txt
+[0.934s] reading manifest file 'res_sim.egg-info/SOURCES.txt'
+[0.934s] writing manifest file 'res_sim.egg-info/SOURCES.txt'
+[0.935s] running build_ext
+[0.935s] Creating /home/sam/turtlebot3_ws/install/res_sim/lib/python3.10/site-packages/res-sim.egg-link (link to .)
+[0.936s] Installing robot_controller script to /home/sam/turtlebot3_ws/install/res_sim/lib/res_sim
+[0.936s] Installing table_behaviour script to /home/sam/turtlebot3_ws/install/res_sim/lib/res_sim
+[0.936s] 
+[0.936s] Installed /home/sam/turtlebot3_ws/build/res_sim
+[0.936s] running symlink_data
+[0.955s] Invoked command in '/home/sam/turtlebot3_ws/build/res_sim' returned '0': PYTHONPATH=/home/sam/turtlebot3_ws/build/res_sim/prefix_override:/home/sam/turtlebot3_ws/install/res_sim/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py develop --editable --build-directory /home/sam/turtlebot3_ws/build/res_sim/build --no-deps symlink_data

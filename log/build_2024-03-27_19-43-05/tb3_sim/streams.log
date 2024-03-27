@@ -1,0 +1,19 @@
+[0.630s] Invoking command in '/home/sam/turtlebot3_ws/build/tb3_sim': PYTHONPATH=/home/sam/turtlebot3_ws/build/tb3_sim/prefix_override:/home/sam/turtlebot3_ws/install/tb3_sim/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py develop --editable --build-directory /home/sam/turtlebot3_ws/build/tb3_sim/build --no-deps symlink_data
+[0.869s] running develop
+[0.869s] /usr/lib/python3/dist-packages/setuptools/command/easy_install.py:158: EasyInstallDeprecationWarning: easy_install command is deprecated. Use build and pip and other standards-based tools.
+[0.869s]   warnings.warn(
+[0.964s] running egg_info
+[0.964s] writing tb3_sim.egg-info/PKG-INFO
+[0.964s] writing dependency_links to tb3_sim.egg-info/dependency_links.txt
+[0.964s] writing entry points to tb3_sim.egg-info/entry_points.txt
+[0.964s] writing requirements to tb3_sim.egg-info/requires.txt
+[0.964s] writing top-level names to tb3_sim.egg-info/top_level.txt
+[0.965s] reading manifest file 'tb3_sim.egg-info/SOURCES.txt'
+[0.966s] writing manifest file 'tb3_sim.egg-info/SOURCES.txt'
+[0.966s] running build_ext
+[0.967s] Creating /home/sam/turtlebot3_ws/install/tb3_sim/lib/python3.10/site-packages/tb3-sim.egg-link (link to .)
+[0.967s] Installing amcl_init_pose_publisher script to /home/sam/turtlebot3_ws/install/tb3_sim/lib/tb3_sim
+[0.967s] 
+[0.967s] Installed /home/sam/turtlebot3_ws/build/tb3_sim
+[0.967s] running symlink_data
+[0.983s] Invoked command in '/home/sam/turtlebot3_ws/build/tb3_sim' returned '0': PYTHONPATH=/home/sam/turtlebot3_ws/build/tb3_sim/prefix_override:/home/sam/turtlebot3_ws/install/tb3_sim/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py develop --editable --build-directory /home/sam/turtlebot3_ws/build/tb3_sim/build --no-deps symlink_data

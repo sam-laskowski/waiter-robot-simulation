@@ -25,6 +25,7 @@ setup(
     entry_points={
         'console_scripts': [
             'robot_controller = res_sim.robot_controller:main',
+            'table_behaviour = res_sim.table:main'
         ],
     },
 )
