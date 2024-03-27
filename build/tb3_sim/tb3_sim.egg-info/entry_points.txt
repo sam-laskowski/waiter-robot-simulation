@@ -1,0 +1,3 @@
+[console_scripts]
+amcl_init_pose_publisher = tb3_sim.set_init_amcl_pose:main
+

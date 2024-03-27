@@ -1,0 +1,9 @@
+source;share/res_sim/hook/pythonpath.ps1
+source;share/res_sim/hook/pythonpath.dsv
+source;share/res_sim/hook/pythonpath.sh
+source;share/res_sim/hook/ament_prefix_path.ps1
+source;share/res_sim/hook/ament_prefix_path.dsv
+source;share/res_sim/hook/ament_prefix_path.sh
+source;../../build/res_sim/share/res_sim/hook/pythonpath_develop.ps1
+source;../../build/res_sim/share/res_sim/hook/pythonpath_develop.dsv
+source;../../build/res_sim/share/res_sim/hook/pythonpath_develop.sh

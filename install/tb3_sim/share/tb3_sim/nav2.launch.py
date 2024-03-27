@@ -1,0 +1,1 @@
+/home/sam/turtlebot3_ws/build/tb3_sim/launch/nav2.launch.py

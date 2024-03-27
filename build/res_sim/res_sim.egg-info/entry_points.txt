@@ -1,0 +1,3 @@
+[console_scripts]
+robot_controller = res_sim.robot_controller:main
+

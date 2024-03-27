@@ -1,0 +1,19 @@
+[0.543s] Invoking command in '/home/sam/turtlebot3_ws/build/turtlebot3_teleop': PYTHONPATH=/home/sam/turtlebot3_ws/build/turtlebot3_teleop/prefix_override:/home/sam/turtlebot3_ws/install/turtlebot3_teleop/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py develop --editable --build-directory /home/sam/turtlebot3_ws/build/turtlebot3_teleop/build --no-deps symlink_data
+[0.706s] running develop
+[0.707s] /usr/lib/python3/dist-packages/setuptools/command/easy_install.py:158: EasyInstallDeprecationWarning: easy_install command is deprecated. Use build and pip and other standards-based tools.
+[0.707s]   warnings.warn(
+[0.839s] running egg_info
+[0.839s] writing turtlebot3_teleop.egg-info/PKG-INFO
+[0.839s] writing dependency_links to turtlebot3_teleop.egg-info/dependency_links.txt
+[0.839s] writing entry points to turtlebot3_teleop.egg-info/entry_points.txt
+[0.839s] writing requirements to turtlebot3_teleop.egg-info/requires.txt
+[0.839s] writing top-level names to turtlebot3_teleop.egg-info/top_level.txt
+[0.841s] reading manifest file 'turtlebot3_teleop.egg-info/SOURCES.txt'
+[0.841s] writing manifest file 'turtlebot3_teleop.egg-info/SOURCES.txt'
+[0.842s] running build_ext
+[0.843s] Creating /home/sam/turtlebot3_ws/install/turtlebot3_teleop/lib/python3.10/site-packages/turtlebot3-teleop.egg-link (link to .)
+[0.843s] Installing teleop_keyboard script to /home/sam/turtlebot3_ws/install/turtlebot3_teleop/lib/turtlebot3_teleop
+[0.843s] 
+[0.843s] Installed /home/sam/turtlebot3_ws/build/turtlebot3_teleop
+[0.844s] running symlink_data
+[0.865s] Invoked command in '/home/sam/turtlebot3_ws/build/turtlebot3_teleop' returned '0': PYTHONPATH=/home/sam/turtlebot3_ws/build/turtlebot3_teleop/prefix_override:/home/sam/turtlebot3_ws/install/turtlebot3_teleop/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py develop --editable --build-directory /home/sam/turtlebot3_ws/build/turtlebot3_teleop/build --no-deps symlink_data

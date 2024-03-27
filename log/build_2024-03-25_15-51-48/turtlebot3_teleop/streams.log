@@ -1,0 +1,26 @@
+[0.576s] Invoking command in '/home/sam/turtlebot3_ws/build/turtlebot3_teleop': PYTHONPATH=/home/sam/turtlebot3_ws/build/turtlebot3_teleop/prefix_override:/home/sam/turtlebot3_ws/install/turtlebot3_teleop/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py develop --editable --build-directory /home/sam/turtlebot3_ws/build/turtlebot3_teleop/build --no-deps symlink_data
+[0.809s] running develop
+[0.809s] /usr/lib/python3/dist-packages/setuptools/command/easy_install.py:158: EasyInstallDeprecationWarning: easy_install command is deprecated. Use build and pip and other standards-based tools.
+[0.809s]   warnings.warn(
+[0.947s] running egg_info
+[0.947s] creating turtlebot3_teleop.egg-info
+[0.947s] writing turtlebot3_teleop.egg-info/PKG-INFO
+[0.948s] writing dependency_links to turtlebot3_teleop.egg-info/dependency_links.txt
+[0.948s] writing entry points to turtlebot3_teleop.egg-info/entry_points.txt
+[0.948s] writing requirements to turtlebot3_teleop.egg-info/requires.txt
+[0.948s] writing top-level names to turtlebot3_teleop.egg-info/top_level.txt
+[0.949s] writing manifest file 'turtlebot3_teleop.egg-info/SOURCES.txt'
+[0.951s] reading manifest file 'turtlebot3_teleop.egg-info/SOURCES.txt'
+[0.952s] writing manifest file 'turtlebot3_teleop.egg-info/SOURCES.txt'
+[0.953s] running build_ext
+[0.954s] Creating /home/sam/turtlebot3_ws/install/turtlebot3_teleop/lib/python3.10/site-packages/turtlebot3-teleop.egg-link (link to .)
+[0.955s] Installing teleop_keyboard script to /home/sam/turtlebot3_ws/install/turtlebot3_teleop/lib/turtlebot3_teleop
+[0.955s] 
+[0.955s] Installed /home/sam/turtlebot3_ws/build/turtlebot3_teleop
+[0.955s] running symlink_data
+[0.955s] creating /home/sam/turtlebot3_ws/install/turtlebot3_teleop/share/ament_index
+[0.955s] creating /home/sam/turtlebot3_ws/install/turtlebot3_teleop/share/ament_index/resource_index
+[0.956s] creating /home/sam/turtlebot3_ws/install/turtlebot3_teleop/share/ament_index/resource_index/packages
+[0.956s] symbolically linking /home/sam/turtlebot3_ws/build/turtlebot3_teleop/resource/turtlebot3_teleop -> /home/sam/turtlebot3_ws/install/turtlebot3_teleop/share/ament_index/resource_index/packages
+[0.956s] symbolically linking /home/sam/turtlebot3_ws/build/turtlebot3_teleop/package.xml -> /home/sam/turtlebot3_ws/install/turtlebot3_teleop/share/turtlebot3_teleop
+[0.990s] Invoked command in '/home/sam/turtlebot3_ws/build/turtlebot3_teleop' returned '0': PYTHONPATH=/home/sam/turtlebot3_ws/build/turtlebot3_teleop/prefix_override:/home/sam/turtlebot3_ws/install/turtlebot3_teleop/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py develop --editable --build-directory /home/sam/turtlebot3_ws/build/turtlebot3_teleop/build --no-deps symlink_data

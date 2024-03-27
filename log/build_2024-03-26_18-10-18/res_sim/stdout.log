@@ -1,0 +1,22 @@
+running develop
+running egg_info
+creating res_sim.egg-info
+writing res_sim.egg-info/PKG-INFO
+writing dependency_links to res_sim.egg-info/dependency_links.txt
+writing entry points to res_sim.egg-info/entry_points.txt
+writing requirements to res_sim.egg-info/requires.txt
+writing top-level names to res_sim.egg-info/top_level.txt
+writing manifest file 'res_sim.egg-info/SOURCES.txt'
+reading manifest file 'res_sim.egg-info/SOURCES.txt'
+writing manifest file 'res_sim.egg-info/SOURCES.txt'
+running build_ext
+Creating /home/sam/turtlebot3_ws/install/res_sim/lib/python3.10/site-packages/res-sim.egg-link (link to .)
+Installing robot_controller script to /home/sam/turtlebot3_ws/install/res_sim/lib/res_sim
+
+Installed /home/sam/turtlebot3_ws/build/res_sim
+running symlink_data
+creating /home/sam/turtlebot3_ws/install/res_sim/share/ament_index
+creating /home/sam/turtlebot3_ws/install/res_sim/share/ament_index/resource_index
+creating /home/sam/turtlebot3_ws/install/res_sim/share/ament_index/resource_index/packages
+symbolically linking /home/sam/turtlebot3_ws/build/res_sim/resource/res_sim -> /home/sam/turtlebot3_ws/install/res_sim/share/ament_index/resource_index/packages
+symbolically linking /home/sam/turtlebot3_ws/build/res_sim/package.xml -> /home/sam/turtlebot3_ws/install/res_sim/share/res_sim
