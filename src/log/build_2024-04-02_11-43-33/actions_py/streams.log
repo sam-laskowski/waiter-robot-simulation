@@ -1,0 +1,39 @@
+[0.338s] Invoking command in '/home/sam/turtlebot3_ws/src/actions_py': PYTHONPATH=/home/sam/turtlebot3_ws/src/build/actions_py/prefix_override:/home/sam/turtlebot3_ws/src/install/actions_py/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py egg_info --egg-base ../build/actions_py build --build-base /home/sam/turtlebot3_ws/src/build/actions_py/build install --record /home/sam/turtlebot3_ws/src/build/actions_py/install.log --single-version-externally-managed install_data
+[0.470s] running egg_info
+[0.470s] creating ../build/actions_py/actions_py.egg-info
+[0.470s] writing ../build/actions_py/actions_py.egg-info/PKG-INFO
+[0.470s] writing dependency_links to ../build/actions_py/actions_py.egg-info/dependency_links.txt
+[0.470s] writing entry points to ../build/actions_py/actions_py.egg-info/entry_points.txt
+[0.470s] writing requirements to ../build/actions_py/actions_py.egg-info/requires.txt
+[0.470s] writing top-level names to ../build/actions_py/actions_py.egg-info/top_level.txt
+[0.470s] writing manifest file '../build/actions_py/actions_py.egg-info/SOURCES.txt'
+[0.471s] reading manifest file '../build/actions_py/actions_py.egg-info/SOURCES.txt'
+[0.471s] writing manifest file '../build/actions_py/actions_py.egg-info/SOURCES.txt'
+[0.471s] running build
+[0.472s] running build_py
+[0.472s] creating /home/sam/turtlebot3_ws/src/build/actions_py/build
+[0.472s] creating /home/sam/turtlebot3_ws/src/build/actions_py/build/lib
+[0.472s] creating /home/sam/turtlebot3_ws/src/build/actions_py/build/lib/actions_py
+[0.472s] copying actions_py/move_action_server.py -> /home/sam/turtlebot3_ws/src/build/actions_py/build/lib/actions_py
+[0.472s] copying actions_py/__init__.py -> /home/sam/turtlebot3_ws/src/build/actions_py/build/lib/actions_py
+[0.472s] copying actions_py/move_action_client.py -> /home/sam/turtlebot3_ws/src/build/actions_py/build/lib/actions_py
+[0.472s] running install
+[0.472s] running install_lib
+[0.472s] creating /home/sam/turtlebot3_ws/src/install/actions_py/lib/python3.10/site-packages/actions_py
+[0.472s] copying /home/sam/turtlebot3_ws/src/build/actions_py/build/lib/actions_py/move_action_server.py -> /home/sam/turtlebot3_ws/src/install/actions_py/lib/python3.10/site-packages/actions_py
+[0.473s] copying /home/sam/turtlebot3_ws/src/build/actions_py/build/lib/actions_py/__init__.py -> /home/sam/turtlebot3_ws/src/install/actions_py/lib/python3.10/site-packages/actions_py
+[0.473s] copying /home/sam/turtlebot3_ws/src/build/actions_py/build/lib/actions_py/move_action_client.py -> /home/sam/turtlebot3_ws/src/install/actions_py/lib/python3.10/site-packages/actions_py
+[0.473s] byte-compiling /home/sam/turtlebot3_ws/src/install/actions_py/lib/python3.10/site-packages/actions_py/move_action_server.py to move_action_server.cpython-310.pyc
+[0.473s] byte-compiling /home/sam/turtlebot3_ws/src/install/actions_py/lib/python3.10/site-packages/actions_py/__init__.py to __init__.cpython-310.pyc
+[0.473s] byte-compiling /home/sam/turtlebot3_ws/src/install/actions_py/lib/python3.10/site-packages/actions_py/move_action_client.py to move_action_client.cpython-310.pyc
+[0.474s] running install_data
+[0.474s] creating /home/sam/turtlebot3_ws/src/install/actions_py/share/ament_index
+[0.474s] creating /home/sam/turtlebot3_ws/src/install/actions_py/share/ament_index/resource_index
+[0.474s] creating /home/sam/turtlebot3_ws/src/install/actions_py/share/ament_index/resource_index/packages
+[0.474s] copying resource/actions_py -> /home/sam/turtlebot3_ws/src/install/actions_py/share/ament_index/resource_index/packages
+[0.474s] copying package.xml -> /home/sam/turtlebot3_ws/src/install/actions_py/share/actions_py
+[0.474s] running install_egg_info
+[0.475s] Copying ../build/actions_py/actions_py.egg-info to /home/sam/turtlebot3_ws/src/install/actions_py/lib/python3.10/site-packages/actions_py-0.0.0-py3.10.egg-info
+[0.476s] running install_scripts
+[0.488s] writing list of installed files to '/home/sam/turtlebot3_ws/src/build/actions_py/install.log'
+[0.502s] Invoked command in '/home/sam/turtlebot3_ws/src/actions_py' returned '0': PYTHONPATH=/home/sam/turtlebot3_ws/src/build/actions_py/prefix_override:/home/sam/turtlebot3_ws/src/install/actions_py/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py egg_info --egg-base ../build/actions_py build --build-base /home/sam/turtlebot3_ws/src/build/actions_py/build install --record /home/sam/turtlebot3_ws/src/build/actions_py/install.log --single-version-externally-managed install_data

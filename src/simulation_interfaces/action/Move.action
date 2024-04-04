@@ -1,0 +1,11 @@
+#goal
+float64 x
+float64 y
+float64 priority
+---
+#result
+float64 result
+boolean success
+---
+#feedback
+float64 feedback

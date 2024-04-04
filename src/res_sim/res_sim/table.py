@@ -21,8 +21,9 @@ class TableReadyPublisher(Node):
         num_msg = Int32()
         num_msg.data = table_number
         self.number_publisher.publish(num_msg)
+        self.get_logger().info('Sent!')
         
-        self.timer.cancel()  # Cancel the current timer if it's a one-time event
+        #self.timer.cancel()  # Cancel the current timer if it's a one-time event
 
 def main(args=None):
     rclpy.init(args=args)
