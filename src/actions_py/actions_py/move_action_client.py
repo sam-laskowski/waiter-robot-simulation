@@ -2,15 +2,15 @@ import rclpy
 from rclpy.node import Node
 from rclpy.action import ActionClient
 from std_msgs.msg import String, Int32
-from simulation_interfaces.action import Move
+from simulation_interfaces.action import TakeOrder, DeliverFood
 import random
 import queue
 
 coords = {
-    1: [-4.5, -2.0], #table1
-    2: [-4.5, 1.5], #table2
-    3: [0.3, -2.5], #table3
-    4: [0.3, 2.5], #table4
+    1: [-4.3, -2.0], #table1
+    2: [-4.3, 1.5], #table2
+    3: [0.3, -2.2], #table3
+    4: [0.3, 2.2], #table4
     5: [4.5, 0.0] #kitchen
 }
 
@@ -18,29 +18,45 @@ class MoveActionClient(Node):
 
     def __init__(self):
         super().__init__('move_action_client')
-        self._action_client = ActionClient(self, Move, 'move')
-        self.subscription = self.create_subscription(
+
+        self.take_order_action_client = ActionClient(self, TakeOrder, 'take_order')
+        self.deliver_food_action_client = ActionClient(self, DeliverFood, 'deliver_food')
+
+        self.order_completed_publisher = self.create_publisher(String, 'order_completed', 10)
+        
+        self.table_ready_subscription = self.create_subscription(
             Int32,
-            'table_ready_number', #topic to subscribe to
-            self.topic_callback,
+            'table_ready_to_order_number', #topic to subscribe to
+            self.table_ready_to_order_callback,
             10)
+        
+        self.food_delivery_subscription = self.create_subscription(
+            String,
+            'food_request',
+            self.food_request_callback,
+            10
+        )
         
         self.goals_queue = queue.PriorityQueue()
         self.robot_busy = False
 
-    def topic_callback(self, msg):
+
+    # all order logic
+    def table_ready_to_order_callback(self, msg):
         x, y = coords.get(msg.data)
 
         # add priority logic
         prio = random.uniform(1.0, 10.0)
         
-        self.get_logger().info(f'Publishing goal to move to table {msg.data} at ({x}, {y}) with priority {prio}')
-        goal_msg = Move.Goal()
+        self.get_logger().info(f'Queuing an order request at table {msg.data} at ({x}, {y}) with priority {prio}')
+        goal_msg = TakeOrder.Goal()
         goal_msg.x = x
         goal_msg.y = y
         goal_msg.priority = prio
+        goal_msg.table_number = msg.data
+        goal_msg.action_type = "Take Order"
 
-        self.goals_queue.put((prio, goal_msg))
+        self.goals_queue.put((-prio, goal_msg)) # negative prio to get highest priority first
 
         # attempt to send next goal if robot is not busy
         self.try_send_next_goal()
@@ -53,10 +69,19 @@ class MoveActionClient(Node):
 
     def send_goal(self, goal_msg):
         self.robot_busy = True # robot is now busy
-        self._action_client.wait_for_server()
 
-        self._send_goal_future = self._action_client.send_goal_async(goal_msg, feedback_callback=self.feedback_callback)
-        self._send_goal_future.add_done_callback(self.goal_response_callback)
+        # change logic based on goal type
+
+        if goal_msg.action_type == "Take Order":
+            self.take_order_action_client.wait_for_server()            
+            self._send_goal_future = self.take_order_action_client.send_goal_async(goal_msg, feedback_callback=self.feedback_callback)
+            self._send_goal_future.add_done_callback(self.goal_response_callback)
+
+        elif goal_msg.action_type == "Deliver Food":
+            self.deliver_food_action_client.wait_for_server()
+            self._send_goal_future = self.deliver_food_action_client.send_goal_async(goal_msg, feedback_callback=self.feedback_callback)
+            self._send_goal_future.add_done_callback(self.goal_response_callback)
+        
     
     def goal_response_callback(self, future):
         goal_handle = future.result()
@@ -67,18 +92,34 @@ class MoveActionClient(Node):
             return
 
         self.get_logger().info('Goal accepted :)')
+        
         self._get_result_future = goal_handle.get_result_async()
         self._get_result_future.add_done_callback(self.get_result_callback)
 
     def get_result_callback(self, future):
-        result = future.result().success
-        self.get_logger().info('Result: {0}'.format(result))
+        table_number = future.result().result.table_number
+        result = future.result().result.result
+        if result == "Order Sent":
+            self.get_logger().info(f'Order complete for table: {table_number}')
+            self.order_completed_publisher.publish(String(data=str(table_number)))
+
+
         self.robot_busy = False
         self.try_send_next_goal()
 
     def feedback_callback(self, feedback_msg):
         feedback = feedback_msg.feedback
         self.get_logger().info('Feedback: {0}'.format(feedback))
+
+    
+    # all food delivery logic
+    def food_request_callback(self, msg):
+        table_number = int(msg.data)
+        self.get_logger().info(f'Food for table {table_number} has been made')
+        # add food delivery logic
+        #self.deliver_food(table_number)
+
+    
 
 def main(args=None):
     rclpy.init(args=args)

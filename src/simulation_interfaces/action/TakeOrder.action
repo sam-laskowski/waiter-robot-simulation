@@ -2,10 +2,12 @@
 float64 x
 float64 y
 float64 priority
+int32 table_number
+string action_type
 ---
 #result
-float64 result
-boolean success
+string result
+int32 table_number
 ---
 #feedback
 float64 feedback
