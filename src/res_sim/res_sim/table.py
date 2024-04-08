@@ -27,7 +27,7 @@ class TableReadyPublisher(Node):
 
         self.food_recieved = self.create_subscription(
             String,
-            'food_recieved',
+            'food_delivery_complete',
             self.food_recieved_callback,
             10
         )
