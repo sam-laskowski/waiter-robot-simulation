@@ -7,11 +7,13 @@ import random
 import queue
 
 coords = {
-    1: [-4.3, -2.0], #table1
-    2: [-4.3, 1.5], #table2
-    3: [0.3, -2.2], #table3
-    4: [0.3, 2.2], #table4
-    5: [4.5, 0.0] #kitchen
+    1: [0.8, 1.3], #cafe_table1
+    2: [0.8, -1.9], #cafe_table2
+    3: [-1.0, -3.7], #couch_table
+    4: [2.4, 2.8], #sofa_table1
+    5: [2.4, -0.4], #sofa_table2
+    6: [2.4, -3.6], #sofa_table3
+    7: [-1.0, -2.5], #kicthen
 }
 
 class MoveActionClient(Node):
@@ -137,7 +139,7 @@ class MoveActionClient(Node):
         table_number = int(msg.data)
         self.get_logger().info(f'Food for table {table_number} has been made')
         # add food delivery logic
-        x1, y1 = coords.get(5) # kitchen coords
+        x1, y1 = coords.get(7) # kitchen coords
         x2, y2 = coords.get(table_number)
         prio = random.uniform(1.0, 10.0)
         self.get_logger().info(f'Queuing a deliver food request for table {msg.data} at ({x2}, {y2}) with priority {prio}')

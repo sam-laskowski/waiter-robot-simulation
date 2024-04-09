@@ -16,7 +16,7 @@ class TableReadyPublisher(Node):
         # customer arrives every 10 seconds
         self.customer_timer = self.create_timer(10.0, self.customer_arrived, callback_group=self.callback_group)
 
-        self.empty_tables = [1, 2, 3, 4]
+        self.empty_tables = [1, 2, 3, 4, 5, 6]
 
         self.order_completed = self.create_subscription(
             String,
@@ -66,8 +66,17 @@ class TableReadyPublisher(Node):
         table_number = int(msg.data)
         self.get_logger().info(f'Food recieved for table {table_number}')
 
+        timer_wrapper = [None]
+
         # table eats for 25 seconds, then requests bill after
-        self.create_timer(25.0, lambda: self.request_bill(table_number), callback_group=self.callback_group)
+        def timer_callback():
+            self.eating(timer_wrapper[0], table_number)
+        timer_wrapper[0] = self.create_timer(25.0, timer_callback, callback_group=self.callback_group)
+
+
+    def eating(self, timer, table_number):
+        self.request_bill(table_number)
+        timer.cancel()
 
     def request_bill(self, table_number):
         self.get_logger().info(f'Table {table_number} requested bill')
