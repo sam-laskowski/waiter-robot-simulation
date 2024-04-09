@@ -23,7 +23,7 @@ def generate_launch_description():
       launch_arguments={
           'use_sim_time': use_sim_time,
           'autostart': autostart,
-          'map': os.path.join(pkg_tb3_sim, 'maps', 'res_map2.yaml')
+          'map': os.path.join(pkg_tb3_sim, 'maps', 'restaurant3_map2.yaml')
       }.items()
   )
 
@@ -44,8 +44,8 @@ def generate_launch_description():
       executable="amcl_init_pose_publisher",
       name="amcl_init_pose_publisher",
       parameters=[{
-          "x": -2.0,
-          "y": -0.5,
+          "x": 0.0,
+          "y": 0.0,
       }]
   )
 
