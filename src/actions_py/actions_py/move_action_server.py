@@ -47,7 +47,7 @@ class MoveActionServer(Node):
         )
 
     async def take_order_callback(self, goal_handle: ServerGoalHandle):
-        self.get_logger().info(f'Executing goal with priority {goal_handle.request.priority}')
+        self.get_logger().info(f'Executing Take Order: Table {goal_handle.request.table_number}, Priority {goal_handle.request.priority}')
         feedback_msg = TakeOrder.Feedback()
         dir = direction[goal_handle.request.table_number]
 
@@ -58,11 +58,12 @@ class MoveActionServer(Node):
         result = TakeOrder.Result()
         result.result = "Order Sent"
         result.table_number = goal_handle.request.table_number
+        result.start_time = goal_handle.request.start_time
         self.get_logger().info('Goal succeeded!')
         return result
     
     async def deliver_food_callback(self, goal_handle: ServerGoalHandle):
-        self.get_logger().info(f'Executing goal with priority {goal_handle.request.priority}')
+        self.get_logger().info(f'Executing Food Delivery: Table {goal_handle.request.table_number}, Priority {goal_handle.request.priority}')
         feedback_msg = DeliverFood.Feedback()
         dir = direction[goal_handle.request.table_number]
 
@@ -73,11 +74,12 @@ class MoveActionServer(Node):
         result = DeliverFood.Result()
         result.result = "Food Delivered"
         result.table_number = goal_handle.request.table_number
+        result.start_time = goal_handle.request.start_time
         self.get_logger().info('Goal succeeded!')
         return result
     
     async def take_bill_callback(self, goal_handle: ServerGoalHandle):
-        self.get_logger().info(f'Executing goal with priority {goal_handle.request.priority}')
+        self.get_logger().info(f'Executing Take Bill: Table {goal_handle.request.table_number}, Priority {goal_handle.request.priority}')
         feedback_msg = TakeBill.Feedback()
         dir = direction[goal_handle.request.table_number]
 
@@ -87,6 +89,7 @@ class MoveActionServer(Node):
         result = TakeBill.Result()
         result.result = "Bill Taken"
         result.table_number = goal_handle.request.table_number
+        result.start_time = goal_handle.request.start_time
         self.get_logger().info('Goal succeeded!')
         return result
 

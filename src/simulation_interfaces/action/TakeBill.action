@@ -4,10 +4,12 @@ float64 y
 float64 priority
 int32 table_number
 string action_type
+string start_time
 ---
 #result
 string result
 int32 table_number
+string start_time
 ---
 #feedback
 float64 feedback
