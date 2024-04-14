@@ -2,6 +2,8 @@ import rclpy
 from rclpy.action import ActionServer
 from rclpy.node import Node
 from rclpy.action.server import ServerGoalHandle
+from rcl_interfaces.msg import SetParametersResult
+from rclpy.parameter import Parameter
 import time
 from geometry_msgs.msg import PoseWithCovarianceStamped, PoseStamped
 import threading
@@ -68,7 +70,7 @@ class MoveActionServer(Node):
         dir = direction[goal_handle.request.table_number]
 
         # go to kitchen then to table
-        self.collect_and_deliver_food(goal_handle.request.x1, goal_handle.request.y1, goal_handle.request.x2, goal_handle.request.y2, dir)
+        self.collect_and_deliver_food(goal_handle.request.x1, goal_handle.request.y1, goal_handle.request.x, goal_handle.request.y, dir)
         # only succeed if the robot is at the goal
         goal_handle.succeed()
         result = DeliverFood.Result()

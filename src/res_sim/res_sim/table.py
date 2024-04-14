@@ -18,6 +18,10 @@ class TableReadyPublisher(Node):
 
         self.empty_tables = [1, 2, 3, 4, 5, 6]
 
+        self.total_tables_waited = 0
+        self.total_food_delivered = 0
+        self.total_bills_paid = 0
+
         self.order_completed = self.create_subscription(
             String,
             'order_completed',
@@ -42,7 +46,7 @@ class TableReadyPublisher(Node):
     def order_completed_callback(self, msg):
         table_number = int(msg.data)
         self.get_logger().info(f'Sending order to be made by kitcken for table {table_number}')
-
+        self.total_tables_waited += 1
         timer_wrapper = [None]
         # food is ready in 20 seconds
 
@@ -65,7 +69,7 @@ class TableReadyPublisher(Node):
     def food_recieved_callback(self, msg):
         table_number = int(msg.data)
         self.get_logger().info(f'Food recieved for table {table_number}')
-
+        self.total_food_delivered += 1
         timer_wrapper = [None]
 
         # table eats for 25 seconds, then requests bill after
@@ -87,6 +91,8 @@ class TableReadyPublisher(Node):
     def bill_completed_callback(self, msg):
         table_number = int(msg.data)
         self.get_logger().info(f'Bill completed for table {table_number}')
+        self.total_bills_paid += 1
+        self.get_logger().info(f'Total tables waited: {self.total_tables_waited} /n Total food delivered: {self.total_food_delivered} /n Total bills paid: {self.total_bills_paid}')
         self.empty_tables.append(table_number)
 
     def customer_arrived(self):
