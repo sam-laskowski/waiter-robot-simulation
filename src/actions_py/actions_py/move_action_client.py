@@ -8,6 +8,7 @@ import queue
 from datetime import datetime
 from nav_msgs.msg import Odometry
 import math
+from geometry_msgs.msg import Point
 
 coords = {
     1: [0.8, 1.3], #cafe_table1
@@ -32,6 +33,8 @@ class MoveActionClient(Node):
         self.order_completed_publisher = self.create_publisher(String, 'order_completed', 10)
         self.food_delivery_completed_publisher = self.create_publisher(String, 'food_delivery_complete', 10)
         self.bill_complete_publisher = self.create_publisher(String, 'bill_completed', 10)
+
+        self.create_timer(300.0, self.log_stats)
 
         self.table_ready_subscription = self.create_subscription(
             Int32,
@@ -68,16 +71,28 @@ class MoveActionClient(Node):
 
         self.start_time = datetime.now()
         # initial action priorities
-        self.initial_action_priority = {"Take Order": 5.0, "Deliver Food": 5.0, "Take Bill": 5.0}
+        self.initial_action_priority = {"Take Order": 7.0, "Deliver Food": 7.0, "Take Bill": 7.0}
 
         # distance importance multiplier
         self.distance_factor_multiplier = 0.5
+
+        # get total distance travelled
+        self.last_position = None
+        self.total_distance = 0.0
+
+        self.action_completion_time = {'Order Sent': [], 'Food Delivered': [], 'Bill Taken': []}
     
     def odom_callback(self, msg):
         # get the current position of the robot
         self.current_x = msg.pose.pose.position.x
         self.current_y = msg.pose.pose.position.y
         self.current_z = msg.pose.pose.position.z
+
+        position = msg.pose.pose.position
+        if self.last_position is not None:
+            distance = ((position.x - self.last_position.x)**2 + (position.y - self.last_position.y)**2)**0.5
+            self.total_distance += distance
+        self.last_position = Point(x=position.x, y=position.y, z=position.z)
 
     def table_ready_to_order_callback(self, msg):
         x, y = coords.get(msg.data)
@@ -168,10 +183,22 @@ class MoveActionClient(Node):
         self.get_logger().info(f'size: {self.goals_queue.qsize()}')
         for i in range(0, self.goals_queue.qsize()):
             priority, goal_msg = self.goals_queue.get()
+            priority = -priority
             x = goal_msg.x
             y = goal_msg.y
-            distance = ((static_x - x)**2 + (static_y - y)**2)**0.5
-            goal_msg.priority = priority - self.distance_factor_multiplier*distance
+            if goal_msg.action_type == "Deliver Food":
+                x1 = goal_msg.x1
+                y1 = goal_msg.y1
+                # distance from robot to kitchen
+                distance = ((static_x - x1)**2 + (static_y - y1)**2)**0.5
+                # distance from kitchen to table
+                distance += ((x1 - x)**2 + (y1 - y)**2)**0.5
+            else:
+                # distnae from robot to table
+                distance = ((static_x - x)**2 + (static_y - y)**2)**0.5
+
+            #shorter the distance the higher the priority
+            goal_msg.priority = (priority + (10/distance)) * self.distance_factor_multiplier
             self.get_logger().info(f'Updated priority for table {goal_msg.table_number} is {goal_msg.priority} with distance {distance}')
             self.action_store[goal_msg.priority] = goal_msg
 
@@ -211,7 +238,7 @@ class MoveActionClient(Node):
         self._get_result_future.add_done_callback(self.get_result_callback)
 
     def get_result_callback(self, future):
-        self.get_logger().info(f'future result: {future.result()}')
+        #self.get_logger().info(f'future result: {future.result()}')
         table_number = future.result().result.table_number
         result = future.result().result.result
         get_start_time = future.result().result.start_time
@@ -219,6 +246,8 @@ class MoveActionClient(Node):
         
         completion_time = datetime.now()
         time_taken = (completion_time - start_time).total_seconds()
+        self.action_completion_time[result].append(time_taken)
+
         # the longer it takes to complete the task, score decreases exponentially
         score_gained = self.calculate_score(result, time_taken)
         self.get_logger().info(f'Score gained: {score_gained}')
@@ -236,6 +265,7 @@ class MoveActionClient(Node):
             self.bill_complete_publisher.publish(String(data=str(table_number)))
 
         self.get_logger().info(f'Current Score: {self.score}')
+        self.get_logger().info(f'Total distance travelled: {self.total_distance}')
         self.robot_busy = False
         self.try_send_next_goal()
 
@@ -244,7 +274,7 @@ class MoveActionClient(Node):
         self.get_logger().info('Feedback: {0}'.format(feedback))
 
     # increasing value of k increases the rate of decrease of the score
-    def calculate_score(self, action_type, time_taken, k=0.1):
+    def calculate_score(self, action_type, time_taken, k=0.05):
         if action_type == "Take Order":
             return 10 * math.exp(-k*time_taken)
         elif action_type == "Deliver Food":
@@ -252,6 +282,28 @@ class MoveActionClient(Node):
         else:
             return 10 * math.exp(-k*time_taken)
     
+    def log_stats(self):
+        self.get_logger().info('Logging stats...')
+        self.get_logger().info(f'Total score: {self.score}')
+        self.get_logger().info(f'Total distance travelled: {self.total_distance}')
+        # each average action completion time
+        if len(self.action_completion_time["Order Sent"]) > 0:
+            average_order_sent = sum(self.action_completion_time["Order Sent"]) / len(self.action_completion_time["Order Sent"])
+            self.get_logger().info(f'Average time taken to complete Take Order: {average_order_sent}')
+        else:
+            self.get_logger().info('No data to compute average time for Take Order.')
+
+        if len(self.action_completion_time["Food Delivered"]) > 0:
+            average_food_delivered = sum(self.action_completion_time["Food Delivered"]) / len(self.action_completion_time["Food Delivered"])
+            self.get_logger().info(f'Average time taken to complete Deliver Food: {average_food_delivered}')
+        else:
+            self.get_logger().info('No data to compute average time for Deliver Food.')
+
+        if len(self.action_completion_time["Bill Taken"]) > 0:
+            average_bill_taken = sum(self.action_completion_time["Bill Taken"]) / len(self.action_completion_time["Bill Taken"])
+            self.get_logger().info(f'Average time taken to complete Take Bill: {average_bill_taken}')
+        else:
+            self.get_logger().info('No data to compute average time for Take Bill.')
 
 def main(args=None):
     rclpy.init(args=args)

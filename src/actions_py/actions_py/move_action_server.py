@@ -115,8 +115,8 @@ class MoveActionServer(Node):
             goal_pose.pose.orientation.w = 1.0
         elif direction == "-x-y":
             # add orientation to face towards negative x-axis and negative y-axis
-            goal_pose.pose.orientation.z = 0.707
-            goal_pose.pose.orientation.w = 0.707
+            goal_pose.pose.orientation.z = 0.9239
+            goal_pose.pose.orientation.w = -0.3827
 
 
         self.navigator.goToPose(goal_pose)

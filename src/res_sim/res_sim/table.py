@@ -13,10 +13,10 @@ class TableReadyPublisher(Node):
         # timer_period = random.uniform(5.0, 10.0)  # Random time between 5 and 10 seconds
         # self.timer = self.create_timer(timer_period, self.timer_callback)
         self.callback_group = ReentrantCallbackGroup()
-        # customer arrives every 10 seconds
-        self.customer_timer = self.create_timer(10.0, self.customer_arrived, callback_group=self.callback_group)
-
-        self.empty_tables = [1, 2, 3, 4, 5, 6]
+        # customer arrives every seconds
+        self.customer_timer = self.create_timer(0.1, self.customer_arrived, callback_group=self.callback_group)
+        self.create_timer(300.0, self.log_stats, callback_group=self.callback_group)
+        self.empty_tables = [1, 2, 3, 4, 5, 6] 
 
         self.total_tables_waited = 0
         self.total_food_delivered = 0
@@ -52,7 +52,7 @@ class TableReadyPublisher(Node):
 
         def timer_callback():
             self.cooking(timer_wrapper[0], table_number)
-        timer_wrapper[0] = self.create_timer(20.0, timer_callback, callback_group=self.callback_group)
+        timer_wrapper[0] = self.create_timer(10.0, timer_callback, callback_group=self.callback_group)
     
     def cooking(self, timer, table_number):
         self.food_ready(table_number)
@@ -75,7 +75,7 @@ class TableReadyPublisher(Node):
         # table eats for 25 seconds, then requests bill after
         def timer_callback():
             self.eating(timer_wrapper[0], table_number)
-        timer_wrapper[0] = self.create_timer(25.0, timer_callback, callback_group=self.callback_group)
+        timer_wrapper[0] = self.create_timer(12.0, timer_callback, callback_group=self.callback_group)
 
 
     def eating(self, timer, table_number):
@@ -92,13 +92,12 @@ class TableReadyPublisher(Node):
         table_number = int(msg.data)
         self.get_logger().info(f'Bill completed for table {table_number}')
         self.total_bills_paid += 1
-        self.get_logger().info(f'Total tables waited: {self.total_tables_waited} /n Total food delivered: {self.total_food_delivered} /n Total bills paid: {self.total_bills_paid}')
         self.empty_tables.append(table_number)
 
     def customer_arrived(self):
         # check if any tables are free
         if len(self.empty_tables) == 0:
-            self.get_logger().info('All tables are occupied')
+            #self.get_logger().info('All tables are occupied')
             return
         # otherwise assign a random table to the customer
         table_number = random.choice(self.empty_tables)
@@ -109,6 +108,10 @@ class TableReadyPublisher(Node):
         num_msg.data = table_number
         self.number_publisher.publish(num_msg)
         self.get_logger().info(f'Table {table_number} requested order')
+
+    def log_stats(self):
+        self.get_logger().info('Logging stats...')
+        self.get_logger().info(f'Total tables waited: {self.total_tables_waited} /n Total food delivered: {self.total_food_delivered} /n Total bills paid: {self.total_bills_paid}')
     
 
 
