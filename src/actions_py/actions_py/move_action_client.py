@@ -70,11 +70,14 @@ class MoveActionClient(Node):
         self.robot_busy = False
 
         self.start_time = datetime.now()
+
         # initial action priorities
-        self.initial_action_priority = {"Take Order": 7.0, "Deliver Food": 7.0, "Take Bill": 7.0}
+        self.initial_action_priority = {"Take Order": 3.7, "Deliver Food": 6.6, "Take Bill": 5.3}
 
         # distance importance multiplier
-        self.distance_factor_multiplier = 0.5
+        self.distance_factor_multiplier = 1.7
+
+        self.time_factor_priority_constant = 0.6
 
         # get total distance travelled
         self.last_position = None
@@ -107,6 +110,7 @@ class MoveActionClient(Node):
         goal_msg = TakeOrder.Goal()
         goal_msg.x = x
         goal_msg.y = y
+        goal_msg.init_priority = prio
         goal_msg.priority = prio
         goal_msg.table_number = msg.data
         goal_msg.action_type = "Take Order"
@@ -134,6 +138,7 @@ class MoveActionClient(Node):
         goal_msg.y1 = y1
         goal_msg.x = x
         goal_msg.y = y
+        goal_msg.init_priority = prio
         goal_msg.priority = prio
         goal_msg.table_number = table_number
         goal_msg.action_type = "Deliver Food"
@@ -156,6 +161,7 @@ class MoveActionClient(Node):
         goal_msg = TakeBill.Goal()
         goal_msg.x = x
         goal_msg.y = y
+        goal_msg.init_priority = prio
         goal_msg.priority = prio
         goal_msg.table_number = table_number
         goal_msg.action_type = "Take Bill"
@@ -168,11 +174,11 @@ class MoveActionClient(Node):
 
     def try_send_next_goal(self):
         if not self.robot_busy and not self.goals_queue.empty():
-            self.distance_based_priority()
+            self.recalculate_priority()
             priority, goal_msg = self.goals_queue.get()
             self.send_goal(goal_msg)
     
-    def distance_based_priority(self):
+    def recalculate_priority(self):
         # get the distance of the robot from each action location
         # iterate over the queue
         # recalculate the priority based on the distance
@@ -182,8 +188,9 @@ class MoveActionClient(Node):
         self.action_store = {}
         self.get_logger().info(f'size: {self.goals_queue.qsize()}')
         for i in range(0, self.goals_queue.qsize()):
-            priority, goal_msg = self.goals_queue.get()
-            priority = -priority
+            prio, goal_msg = self.goals_queue.get()
+            priority = goal_msg.init_priority # get initial priority
+
             x = goal_msg.x
             y = goal_msg.y
             if goal_msg.action_type == "Deliver Food":
@@ -198,13 +205,28 @@ class MoveActionClient(Node):
                 distance = ((static_x - x)**2 + (static_y - y)**2)**0.5
 
             #shorter the distance the higher the priority
-            goal_msg.priority = (priority + (10/distance)) * self.distance_factor_multiplier
+            if self.distance_factor_multiplier != 0.0:
+                goal_msg.priority = (priority + (10/distance)) * self.distance_factor_multiplier
+
             self.get_logger().info(f'Updated priority for table {goal_msg.table_number} is {goal_msg.priority} with distance {distance}')
             self.action_store[goal_msg.priority] = goal_msg
 
         for prio, goal_msg in self.action_store.items():
+            self.time_based_score_update(goal_msg)
             self.goals_queue.put((-prio, goal_msg))
         return
+    
+    def time_based_score_update(self, goal_msg):
+        start_time = datetime.fromisoformat(goal_msg.start_time)
+        current_time = datetime.now()
+        # for every 30 seconds minus 1 from score
+        time_diff = (current_time - start_time).total_seconds()
+        score_reduction = time_diff // 30
+        #add time based priority
+        goal_msg.priority += score_reduction * self.time_factor_priority_constant
+        self.score -= 1 * score_reduction
+        self.get_logger().info(f'Score reduced by {1 * score_reduction} for table {goal_msg.table_number}')
+
 
     def send_goal(self, goal_msg):
         self.robot_busy = True # robot is now busy
@@ -248,7 +270,8 @@ class MoveActionClient(Node):
         time_taken = (completion_time - start_time).total_seconds()
         self.action_completion_time[result].append(time_taken)
 
-        # the longer it takes to complete the task, score decreases exponentially
+        # the longer it takes to complete the task, the less score
+        self.get_logger().info(f'Time taken to complete {result}: {time_taken}')
         score_gained = self.calculate_score(result, time_taken)
         self.get_logger().info(f'Score gained: {score_gained}')
         self.score += score_gained
@@ -274,13 +297,15 @@ class MoveActionClient(Node):
         self.get_logger().info('Feedback: {0}'.format(feedback))
 
     # increasing value of k increases the rate of decrease of the score
-    def calculate_score(self, action_type, time_taken, k=0.05):
-        if action_type == "Take Order":
-            return 10 * math.exp(-k*time_taken)
-        elif action_type == "Deliver Food":
-            return 20 * math.exp(-k*time_taken)
+    def calculate_score(self, action_type, time_taken):
+        
+        if action_type == "Order Sent":
+            return 100 * (25/time_taken)
+        elif action_type == "Food Delivered":
+            return 300 * (100/time_taken)
         else:
-            return 10 * math.exp(-k*time_taken)
+            return (100 * (25/time_taken)) + 30
+        
     
     def log_stats(self):
         self.get_logger().info('Logging stats...')
@@ -301,7 +326,7 @@ class MoveActionClient(Node):
 
         if len(self.action_completion_time["Bill Taken"]) > 0:
             average_bill_taken = sum(self.action_completion_time["Bill Taken"]) / len(self.action_completion_time["Bill Taken"])
-            self.get_logger().info(f'Average time taken to complete Take Bill: {average_bill_taken}')
+            self.get_logger().info(f'Average time taken to complete Take Bill: {average_bill_taken}')    
         else:
             self.get_logger().info('No data to compute average time for Take Bill.')
 
